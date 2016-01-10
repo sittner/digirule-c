@@ -12,7 +12,7 @@
 // Setup config options
 #pragma config FOSC = INTIO67
 #pragma config BOREN = 2 // brown-out disabled in sleep mode
-#pragma config BORV = 2 // brown-out voltage 2.2V
+#pragma config BORV = 3 // brown-out voltage 1.8V
 #pragma config PWRT = ON
 #pragma config WDTEN = OFF
 #pragma config MCLRE = OFF
