@@ -32,8 +32,6 @@ typedef enum {
   mode4BitLogic,
   modeDecDice,
   MODE_COUNT,
-  // internal modes after MODE_COUNT
-  modeOff
 } MODE_T;
 
 static MODE_T select;
@@ -52,6 +50,7 @@ static uint8_t sparkle_timer;
 static uint16_t select_timer;
 static uint16_t off_timer;
 static uint16_t idle_timer;
+static bool off_flag;
 
 static void init_all(void) {
   led_group(LED_ALL, false);
@@ -97,7 +96,8 @@ static void check_off(void) {
     return;
   }
 
-  mode = modeOff;
+  off_timer = 0;
+  off_flag = true;
 }
 
 static void check_idle(void) {
@@ -111,7 +111,8 @@ static void check_idle(void) {
     return;
   }
 
-  mode = modeOff;
+  idle_timer = 0;
+  off_flag = true;
 }
 
 static void switch_off(void) {
@@ -136,8 +137,8 @@ static void switch_off(void) {
   // reenable TIMER2
   TMR2ON = 1;
 
-  // go to default state
-  init_all();
+  // reset idle timer
+  idle_timer = 0;
 }
 
 static void mode_select(void) {
@@ -226,6 +227,8 @@ void main(void) {
   TMR2ON = 1;
 
   while (true) {
+    off_flag = false;
+
     // go to idle and wait for timer
     Sleep();
 
@@ -264,13 +267,14 @@ void main(void) {
       case mode4BitLogic:
         logic_4bit_task();
         break;
-      case modeOff:
-        switch_off();
-        break;
       default:
         logic_task();
         flipflop_task();
         counter_task(mode == modeGrayCnt);
+    }
+
+    if (off_flag) {
+      switch_off();
     }
   }
 }
