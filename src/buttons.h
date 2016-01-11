@@ -17,6 +17,7 @@ extern uint16_t btn_state;
 extern uint16_t btn_pressed;
 extern uint16_t btn_released;
 
+extern void btn_init(void);
 extern void btn_update(void);
 
 #endif

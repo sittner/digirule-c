@@ -15,11 +15,22 @@ const PORTPIN_T BTN_ALL[] = {
 
 #define DEBOUNCE_TIME 20
 
-uint16_t btn_state = 0;
-uint16_t btn_pressed = 0;
-uint16_t btn_released = 0;
+uint16_t btn_state;
+uint16_t btn_pressed;
 
-static uint8_t debounce = 0;
+static uint8_t debounce;
+
+void btn_init(void) {
+  // initialize variables
+  btn_state = 0;
+  debounce = 0;
+
+  // initial update
+  btn_update();
+
+  // reset first edges
+  btn_pressed = 0;
+}
 
 void btn_update(void) {
   const PORTPIN_T *btn;
@@ -28,7 +39,6 @@ void btn_update(void) {
   if (debounce > 0) {
     debounce--;
     btn_pressed = 0;
-    btn_released = 0;
     return;
   }
   debounce = DEBOUNCE_TIME - 1;
@@ -43,6 +53,5 @@ void btn_update(void) {
   }
 
   btn_pressed = btn_state & ~old;
-  btn_released = ~btn_state & old;
 }
 

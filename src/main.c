@@ -48,6 +48,9 @@ static uint8_t sparkle_timer;
 #define SELECT_TIMEOUT  2000
 #define IDLE_TIMEOUT   60000
 
+#define WAKEUP_BUTTON  (PORTB & (1 << 1))
+#define WAKEUP_TIMEOUT 5000
+
 static uint16_t select_timer;
 static uint16_t off_timer;
 static uint16_t idle_timer;
@@ -124,16 +127,23 @@ static void switch_off(void) {
   // all LEDs off
   led_group(LED_ALL, false);
 
-  // go to sleep, wake up on INT1
-  INT1IE = 1;
+  // enable sleep mode
   IDLEN = 0;
-  Sleep();
-  IDLEN = 1;
-  INT1IE = 0;
 
-  // wait for button release
-  __delay_ms(20);
-  while (PORTB & (1 << 1)) { }
+  do {
+    // go to sleep till wakeup IRQ
+    INT1IE = 1;
+    Sleep();
+
+    // filter out glitches
+    __delay_ms(20);
+  } while (!WAKEUP_BUTTON);
+
+  // disable sleep mode
+  IDLEN = 1;
+
+  // initialize button state
+  btn_init();
 
   // reenable TIMER2
   TMR2ON = 1;
@@ -183,10 +193,16 @@ static void sparkle_leds(void) {
 
 // Interrupt Service Routine
 void interrupt ISR() {
-  // interrupts are used only as wake up source
-  // so just reset the flags here
-  TMR2IF = 0;
-  INT1IF = 0;
+  // timer IRQ
+  if (TMR2IF) {
+    TMR2IF = 0;
+  }
+
+  // button wake up IRQ
+  if (INT1IF) {
+    INT1IE = 0;
+    INT1IF = 0;
+  }
 }
 
 // Start Of Program - this is where we setup everything before getting into the main loop
@@ -213,6 +229,7 @@ void main(void) {
   PR2 = _XTAL_FREQ / 1000 / 16 / 4;
 
   // initialize subsystems
+  btn_init();
   init_all();
 
   // disable INT1, config for raising endge
@@ -227,6 +244,7 @@ void main(void) {
   // start TIMER2
   TMR2ON = 1;
 
+  // main loop
   while (true) {
     off_flag = false;
 
