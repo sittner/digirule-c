@@ -38,9 +38,9 @@ typedef enum {
 static MODE_T select;
 static MODE_T mode;
 
-#define SPACLE_DELAY_INC  10
-#define SPACLE_DELAY_DFLT 20
-#define SPACLE_DELAY_MAX  250
+#define SPARKLE_DELAY_INC  10
+#define SPARKLE_DELAY_DFLT 20
+#define SPARKLE_DELAY_MAX  250
 
 static uint8_t sparkle_delay;
 static uint8_t sparkle_timer;
@@ -67,7 +67,7 @@ static void init_all(void) {
   game_init();
   select = modeDefault;
   mode = modeDefault;
-  sparkle_delay = SPACLE_DELAY_DFLT;
+  sparkle_delay = SPARKLE_DELAY_DFLT;
   sparkle_timer = 0;
   select_timer = 0;
   off_timer = 0;
@@ -174,7 +174,7 @@ static void mode_select(void) {
 static void sparkle_leds(void) {
   uint8_t i;
 
-  // spacle LEDs
+  // sparkle LEDs
   if (sparkle_timer > 0) {
     sparkle_timer--;
   } else {
@@ -183,11 +183,11 @@ static void sparkle_leds(void) {
   }
 
   // change speed
-  if ((btn_pressed & CounterUp) && (sparkle_delay >= SPACLE_DELAY_INC)) {
-    sparkle_delay -= SPACLE_DELAY_INC;
+  if ((btn_pressed & CounterUp) && (sparkle_delay >= SPARKLE_DELAY_INC)) {
+    sparkle_delay -= SPARKLE_DELAY_INC;
   }
-  if ((btn_pressed & CounterDown) && (sparkle_delay <= (SPACLE_DELAY_MAX - SPACLE_DELAY_INC))) {
-    sparkle_delay += SPACLE_DELAY_INC;
+  if ((btn_pressed & CounterDown) && (sparkle_delay <= (SPARKLE_DELAY_MAX - SPARKLE_DELAY_INC))) {
+    sparkle_delay += SPARKLE_DELAY_INC;
   }
 }
 
