@@ -49,7 +49,6 @@ static uint8_t sparkle_timer;
 #define IDLE_TIMEOUT   60000
 
 #define WAKEUP_BUTTON  (PORTB & (1 << 1))
-#define WAKEUP_TIMEOUT 5000
 
 static uint16_t select_timer;
 static uint16_t off_timer;
