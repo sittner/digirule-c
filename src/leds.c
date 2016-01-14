@@ -109,10 +109,9 @@ void led_select(const PORTPIN_T *group, uint8_t val) {
   }
 }
 
-void led_rand(const PORTPIN_T *group, uint16_t entrophy) {
-  rand_set_max(entrophy);
+void led_rand(const PORTPIN_T *group, uint8_t entrophy) {
   while (group->port) {
-    set_led(group, rand_get() == 0);
+    set_led(group, rand_get(entrophy) == 0);
     group++;
   }
 }

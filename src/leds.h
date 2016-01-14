@@ -45,6 +45,6 @@ extern void led_single(LED_ENUM_T led, bool state);
 extern void led_group(const PORTPIN_T *group, bool state);
 extern void led_binary(const PORTPIN_T *group, uint8_t val);
 extern void led_select(const PORTPIN_T *group, uint8_t val);
-extern void led_rand(const PORTPIN_T *group, uint16_t entrophy);
+extern void led_rand(const PORTPIN_T *group, uint8_t entrophy);
 
 #endif

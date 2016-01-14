@@ -19,7 +19,6 @@ void dice_init(void) {
 void dice_task(bool decimal) {
   // check the InputB button this will start the dice rolling
   if (btn_state & LogicInputB) {
-    rand_set_max(6);
     speed = 0;
     timer = 0;
   }
@@ -31,7 +30,7 @@ void dice_task(bool decimal) {
     } else {
       speed += SPEED_INC;
       timer = 0;
-      val = rand_get();
+      val = rand_get(6);
     }
   }
 
