@@ -3,7 +3,7 @@
 * https://en.wikipedia.org/wiki/Linear_feedback_shift_register             *
 ****************************************************************************/
 
-#include "randgen2.h"
+#include "randgen.h"
 
 static uint16_t seed = 0xed25;
 

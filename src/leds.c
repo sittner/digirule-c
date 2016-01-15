@@ -1,5 +1,5 @@
 #include "leds.h"
-#include "randgen2.h"
+#include "randgen.h"
 
 const PORTPIN_T LED_ALL[] = {
   { &PORTA, (1 << 2) },

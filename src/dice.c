@@ -1,7 +1,7 @@
 #include "dice.h"
 #include "buttons.h"
 #include "leds.h"
-#include "randgen2.h"
+#include "randgen.h"
 
 #define SPEED_DONE 100
 #define SPEED_INC  5

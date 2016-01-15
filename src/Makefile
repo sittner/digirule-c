@@ -4,7 +4,7 @@ CPUFRQ = 8000000
 
 OBJS = \
   main.p1 \
-  randgen2.p1 \
+  randgen.p1 \
   leds.p1 \
   buttons.p1 \
   logic.p1 \
